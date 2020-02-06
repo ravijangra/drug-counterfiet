@@ -1,0 +1,148 @@
+
+Chaincode Functions
+--------------------
+registerCompany (companyCRN, companyName, Location, organisationRole)
+addDrug(drugName, serialNo, mfgDate, expDate, companyCRN)
+createPO(buyerCRN, sellerCRN, drugName, quantity)
+createShipment(buyerCRN, drugName, listOfAssets, transporterCRN)
+updateShipment( buyerCRN, drugName, transporterCRN)
+retailDrug (drugName, serialNo, retailerCRN, customerAadhar)
+viewHistory (drugName, serialNo)
+viewDrugCurrentState (drugName, serialNo)
+
+Data
+----
+manufacturers - Sun, Cipla
+Distributors - Vision Pharma, Trio Pharma
+transporters - Transworld, DHL
+retailers - Apollo Medicos, Frank Ross Medicos
+consumers - Ravi, Rahul
+
+Steps
+-----
+1. Register 10 companies
+2. Add 4 drugs - 2 each from each manufactureres
+3. Create 2 POs
+4. Create 2 Shipments for both the pos
+5. update Shipments
+6. retail drugs
+7. view current drug state
+8. view viewHistory
+8.
+
+Chaincode function Invoking
+---------------------------
+//registerCompany (companyCRN, companyName, Location, organisationRole)
+
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:registerCompany","M01", "Cipla", "Bangalore", "Manufacturer" ]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:registerCompany","M02", "Sun", "Bangalore", "Manufacturer" ]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:registerCompany","D01", "Trio Pharma", "Bangalore", "Distributor" ]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:registerCompany","D02", "Vision Pharma", "Bangalore", "Distributor" ]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:registerCompany","T01", "DHL", "Bangalore", "Transporter" ]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:registerCompany","T02", "Transworld", "Bangalore", "Transporter" ]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:registerCompany","R01", "Apollo Pharmacy", "Bangalore", "Retailer" ]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:registerCompany","R02", "Frank Ross Pharmacy", "Bangalore", "Retailer" ]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:registerCompany","C01", "Rahul", "Bangalore", "Consumer" ]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:registerCompany","C02", "Ravi", "Bangalore", "Consumer" ]}'
+
+//addDrug(drugName, serialNo, mfgDate, expDate, companyCRN)
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:addDrug","Foracort", "F01", "24012020", "24012025", "M01" ]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:addDrug","Foracort", "F02", "24012020", "24012025", "M01" ]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:addDrug","Foracort", "F03", "24012020", "24012025", "M01" ]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:addDrug","Budacort", "B01", "01012020", "01012025", "M01" ]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:addDrug","Budacort", "B02", "01012020", "01012025", "M01" ]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:addDrug","Budacort", "B03", "01012020", "01012025", "M01" ]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:addDrug","Combiflam", "C01", "01012020", "01012025", "M02" ]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:addDrug","Combiflam", "C02", "01012020", "01012025", "M02" ]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:addDrug","Combiflam", "C03", "01012020", "01012025", "M02" ]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:addDrug","Dolo650", "D03", "01012020", "01012025", "M02" ]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:addDrug","Dolo650", "D04", "01012020", "01012025", "M02" ]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:addDrug","Dolo650", "D05", "01012020", "01012025", "M02" ]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:addDrug","Dolo650", "D01", "01012020", "01012025", "M02" ]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:addDrug","Dolo650", "D02", "01012020", "01012025", "M02" ]}'
+
+//Purchage by Distributors
+
+// createPO(buyerCRN, sellerCRN, drugName, quantity)
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:createPO","D01", "M01", "Foracort", "3" ]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:createPO","D01", "M01", "Budaacort", "3" ]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:createPO","D02", "M02", "Combiflam", "3" ]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:createPO","D02", "M02", "Dolo650", "5" ]}'
+
+// createShipment(buyerCRN, drugName, listOfAssets, transporterCRN)
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:createShipment", "D01", "Foracort","ForacortF03,ForacortF01,ForacortF02", "T01"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:createShipment", "D01", "Budacort","BudacortB01,BudacortB02,BudacortB03", "T01"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:createShipment", "D02", "Combiflam","CombiflamC01,CombiflamC02,CombiflamC03", "T02" ]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:createShipment", "D02", "Dolo650","Dolo650D01,Dolo650D02,Dolo650D03,Dolo650D04,Dolo650D05", "T02" ]}'
+
+//updateShipment( buyerCRN, drugName, transporterCRN)
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:updateShipment", "D01", "Foracort","T01"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:updateShipment", "D01", "Budacort","T01"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:updateShipment", "D02", "Combiflam","T02"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:updateShipment", "D02", "Dolo650","T02"]}'
+
+
+//Purchage by retailers
+
+// createPO(buyerCRN, sellerCRN, drugName, quantity)
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:createPO","R01", "D01", "Foracort", "1" ]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:createPO","R01", "D01", "Budaacort", "2" ]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:createPO","R02", "D02", "Combiflam", "1" ]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:createPO","R02", "D02", "Dolo650", "1" ]}'
+
+// createShipment(buyerCRN, drugName, listOfAssets, transporterCRN)
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:createShipment", "R01", "Foracort","ForacortF03", "T02"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:createShipment", "R01", "Budacort","BudacortB01,BudacortB02", "T02"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:createShipment", "R02", "Budacort","BudacortB03", "T02"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:createShipment", "R02", "Combiflam","CombiflamC01", "T01" ]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:createShipment", "R02", "Dolo650","Dolo650D01", "T01" ]}'
+
+//updateShipment( buyerCRN, drugName, transporterCRN)
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:updateShipment", "R01", "Foracort","T02"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:updateShipment", "R01", "Budacort","T02"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:updateShipment", "R02", "Combiflam","T01"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:updateShipment", "R02", "Dolo650","T01"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:updateShipment", "R02", "Budacort","T02"]}'
+
+
+//Purchage by Consumers
+
+//retailDrug (drugName, serialNo, retailerCRN, customerAadhar)
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:retailDrug", "Foracort", "F03", "R01", "CA01"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:retailDrug", "Budacort", "B01", "R01", "CA01"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:retailDrug", "Budacort", "B02", "R01", "CA01"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:retailDrug", "Combiflam", "C01", "R02", "CA01"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:retailDrug", "Dolo650", "D01", "R02", "CA01"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:retailDrug", "Budacort", "B03", "R02", "CA02"]}'
+
+
+
+//viewDrugCurrentState (drugName, serialNo)
+
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:viewDrugCurrentState", "Foracort", "F01"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:viewDrugCurrentState", "Foracort", "F02"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:viewDrugCurrentState", "Foracort", "F03"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:viewDrugCurrentState", "Budacort", "B01"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:viewDrugCurrentState", "Budacort", "B02"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:viewDrugCurrentState", "Budacort", "B03"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:viewDrugCurrentState", "Combiflam", "C01"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:viewDrugCurrentState", "Combiflam", "C02"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:viewDrugCurrentState", "Combiflam", "C03"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:viewDrugCurrentState", "Dolo650", "D01"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:viewDrugCurrentState", "Dolo650", "D02"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:viewDrugCurrentState", "Dolo650", "D03"]}'
+
+//viewHistory (drugName, serialNo)
+
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:viewHistory", "Foracort", "F01"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:viewHistory", "Foracort", "F02"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:viewHistory", "Foracort", "F03"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:viewHistory", "Budacort", "B01"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:viewHistory", "Budacort", "B02"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:viewHistory", "Budacort", "B03"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:viewHistory", "Combiflam", "C01"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:viewHistory", "Combiflam", "C02"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:viewHistory", "Combiflam", "C03"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:viewHistory", "Dolo650", "D01"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:viewHistory", "Dolo650", "D02"]}'
+peer chaincode invoke -o orderer.pharma-network.com:7050 -C pharmachannel -n pharmanet -c '{"Args":["org.pharma-network.com-manufacturer:viewHistory", "Dolo650", "D03"]}'

@@ -51,9 +51,7 @@ class ManufacturerContract extends Contract {
 
      let dataBuffer = Buffer.from(JSON.stringify(newCompanyObject));
      await ctx.stub.putState(companyKey, dataBuffer);
-     // Return value of new user request created to user
      return newCompanyObject;
-
    }
 
 
@@ -86,16 +84,14 @@ class ManufacturerContract extends Contract {
       owner: companyCRN,
     };
 
-    // Convert the JSON object to a buffer and send it to blockchain for storage
     let dataBuffer = Buffer.from(JSON.stringify(newDrugObject));
     await ctx.stub.putState(drugKey, dataBuffer);
-    // Return value of new Drug Object saved on the ledger
     return newDrugObject;
   }
 
 
   /**
-   * Create a new user account on the network
+   * Create a new Purchase Order on the network
    * @param ctx - The transaction context object
    * @param drugName - Name of the drug
    * @param quantity - Quantity of the drug to be purchased
@@ -106,58 +102,44 @@ class ManufacturerContract extends Contract {
 
    async createPO(ctx, buyerCRN, sellerCRN, drugName, quantity) {
 
-		 let allowedIdentities = ["manufacturer.pharma-network.com", "distributor.pharma-network.com", "retailer.pharma-network.com", "transporter.pharma-network.com"];
-  // let allowedIdentities = ["distributor.pharma-network.com", "retailer.pharma-network.com"];
-     this.isInitiatorAllowed(ctx, allowedIdentities);
-    const poKeyName = buyerCRN + "-" + drugName;
+		const allowedIdentities = ["manufacturer.pharma-network.com", "distributor.pharma-network.com", "retailer.pharma-network.com", "transporter.pharma-network.com"];
+  // const allowedIdentities = ["distributor.pharma-network.com", "retailer.pharma-network.com"];
+    this.isInitiatorAllowed(ctx, allowedIdentities);
+    const poKeyName = buyerCRN + "" + drugName;
     const poKey = ctx.stub.createCompositeKey('org.drug-counterfiet.pharma-network.pos', [poKeyName]);
-
     const buyerKey = ctx.stub.createCompositeKey('org.drug-counterfiet.pharma-network.companies', [buyerCRN]);
 		const sellerKey = ctx.stub.createCompositeKey('org.drug-counterfiet.pharma-network.companies', [sellerCRN]);
 
-		console.log("Buyer Key ************** :: " + buyerKey);
-    // let buyerKeyDataBuffer =  await ctx.stub
-		// .getState(buyerKey)
-		// .catch(err => console.log(err));
-    // const buyer = JSON.parse(buyerKeyDataBuffer.toString());
-
-		  let buyerDataBuffer= await ctx.stub
-						 .getState(buyerKey)
-						 .catch(err => console.log(err));
+		let buyerDataBuffer= await ctx.stub
+		 .getState(buyerKey)
+		 .catch(err => console.log(err));
 		let buyer = JSON.parse(buyerDataBuffer.toString());
-		console.log("Buyer Object  is " + buyer);
 
     let sellerDataBuffer =  await ctx.stub
     .getState(sellerKey)
     .catch(err => console.log(err));
     let seller = JSON.parse(sellerDataBuffer.toString());
 
-		console.log("Seller Object 2 is " + seller.stringify);
-
     if(buyer.hierarchyKey > seller.hierarchyKey && seller.hierarchyKey === buyer.hierarchyKey - 1){
       let newPOObject = {
-        // poID: poKey,
+        poID: poKey,
         drugName: drugName,
         quantity: quantity,
         buyer: buyerCRN,
         seller: sellerCRN,
-      };
+    	};
 
-			console.log("New PO Object is " + newPOObject);
-      // Convert the JSON object to a buffer and send it to blockchain for storage
-      let dataBuffer = Buffer.from(JSON.stringify(newPOObject));
-      await ctx.stub.putState(poKey, dataBuffer);
-      return newPOObject;
+    let dataBuffer = Buffer.from(JSON.stringify(newPOObject));
+    await ctx.stub.putState(poKey, dataBuffer);
+    return newPOObject;
     }
     else {
       throw new Error('Buyer and Seller are not in the desired hierarchical order for this PO to be raised... ');
     }
-
   }
 
-
   /**
-   * Create a new user account on the network
+   * CREATE A NEW SHIPMENT ON THE NETWORK
    * @param ctx - The transaction context object
    * @param drugName - Name of the drug
    * @param listOfAssets - List of drug keys to be packed in the shipment
@@ -167,28 +149,21 @@ class ManufacturerContract extends Contract {
    */
 
  async createShipment(ctx, buyerCRN, drugName, listOfAssets, transporterCRN) {
-  // Create a new composite key for the new property request
-	let allowedIdentities = ["manufacturer.pharma-network.com", "distributor.pharma-network.com", "retailer.pharma-network.com", "transporter.pharma-network.com"];
-// let allowedIdentities = ["distributor.pharma-network.com", "manufacturer.pharma-network.com"];
- this.isInitiatorAllowed(ctx, allowedIdentities);
- const shipmentKeyName = buyerCRN + "-" + drugName;
- const shipmentKey = ctx.stub.createCompositeKey('org.drug-counterfiet.pharma-network.shipments', [shipmentKeyName]);
+	const allowedIdentities = ["manufacturer.pharma-network.com", "distributor.pharma-network.com", "retailer.pharma-network.com", "transporter.pharma-network.com"];
+// const allowedIdentities = ["distributor.pharma-network.com", "manufacturer.pharma-network.com"];
+  this.isInitiatorAllowed(ctx, allowedIdentities);
+  const shipmentKeyName = buyerCRN + "-" + drugName;
+  const shipmentKey = ctx.stub.createCompositeKey('org.drug-counterfiet.pharma-network.shipments', [shipmentKeyName]);
   let drugOwner;
-  // GET the owner of the drug from any item in the list of assets (drugs). creator of the transaction has to be the owner of drug.
 
 	listOfAssets = listOfAssets.split(',');
-
   if(listOfAssets.length !==0){
     const drugKeyName = listOfAssets[0];
 		let drugKey = ctx.stub.createCompositeKey('org.drug-counterfiet.pharma-network.drugs', [drugKeyName]);
-
-		console.log("Drug key is :: " + drugKey);
     let drugKeyDataBuffer =  await ctx.stub
 		.getState(drugKey)
 		.catch(err => console.log(err));
-
     drugOwner = JSON.parse(drugKeyDataBuffer.toString()).owner;
-		console.log("Owner  is :: " + drugOwner);
   }
   else {
     throw new Error("No items in the drug list");
@@ -202,20 +177,16 @@ class ManufacturerContract extends Contract {
     status: "in-transit",
   };
 
-	console.log("Shipment Object is :: " + JSON.stringify(newShipmentObject));
   let dataBuffer = Buffer.from(JSON.stringify(newShipmentObject));
   await ctx.stub.putState(shipmentKey, dataBuffer);
 
   // Update the owner of each drug in the assetlist.
 
-  let drugKeyDataBuffer;
-  // let drugKey;
+  let drugKeyDataBuffer, drugKey, drugObject;
 
 	for (let index=0 ; index < listOfAssets.length ; index++){
 
-		let drugKey = ctx.stub.createCompositeKey('org.drug-counterfiet.pharma-network.drugs', [listOfAssets[index]]);
-
-		console.log("Drug key name :: " + listOfAssets[index]);
+	  drugKey = ctx.stub.createCompositeKey('org.drug-counterfiet.pharma-network.drugs', [listOfAssets[index]]);
 		drugKeyDataBuffer =  await ctx.stub
 		.getState(drugKey)
 		.catch(err => console.log(err));
@@ -223,8 +194,8 @@ class ManufacturerContract extends Contract {
 		if(drugKeyDataBuffer.length === 0){
 			throw new Error("Drug -  " + listOfAssets[index] + " does not exit");
 		}
-		// Convert the user request received buffer to a JSON object
-		let drugObject = JSON.parse(drugKeyDataBuffer.toString());
+
+		drugObject = JSON.parse(drugKeyDataBuffer.toString());
 		drugObject.owner = transporterCRN;
 
 		drugKeyDataBuffer = Buffer.from(JSON.stringify(drugObject));
@@ -238,7 +209,7 @@ class ManufacturerContract extends Contract {
 
 
 /**
- * Create a new user account on the network
+ * UPDATE THE SHIPMENT ON THE NETWORK
  * @param ctx - The transaction context object
  * @param drugName - Name of the drug
  * @param transporterCRN - Company Registration Number of the transporter picking up the shipment.
@@ -262,7 +233,6 @@ async updateShipment(ctx, buyerCRN, drugName, transporterCRN){
     throw new Error("Shipment for drug name " + drugName + " for the buyer " + buyerCRN+ " does not exit");
   }
 
-  // Convert the user request received buffer to a JSON object
   let shipment = JSON.parse(shipmentDataBuffer.toString());
 
   if(shipment.transporter !== transporterCRN) {
@@ -270,34 +240,30 @@ async updateShipment(ctx, buyerCRN, drugName, transporterCRN){
 
   }
   shipment.status = "delivered";
-	console.log("Shipment Status updated to : " + shipment.status);
-  let dataBuffer = Buffer.from(JSON.stringify(shipment));
+
+	let dataBuffer = Buffer.from(JSON.stringify(shipment));
   await ctx.stub.putState(shipmentKey, dataBuffer);
 
   let drugKeyDataBuffer, drugKey, drugObject, drugKeyName, index;
 
 	console.log("Items in shipment :: " + shipment.assets.length);
-	// for each (drugKey in shipment.assets) {
 	for(index = 0; index < shipment.assets.length ; index++ ) {
+		drugKeyName = shipment.assets[index];
+		drugKey = ctx.stub.createCompositeKey('org.drug-counterfiet.pharma-network.drugs', [drugKeyName]);
+		drugKeyDataBuffer =  await ctx.stub
+		.getState(drugKey)
+		.catch(err => console.log(err));
 
-			drugKeyName = shipment.assets[index];
-			drugKey = ctx.stub.createCompositeKey('org.drug-counterfiet.pharma-network.drugs', [drugKeyName]);
-			console.log("Updating drug  :: " + shipment.assets[index]);
-			drugKeyDataBuffer =  await ctx.stub
-			.getState(drugKey)
-			.catch(err => console.log(err));
+		if(drugKeyDataBuffer.length === 0){
+			throw new Error("One of the drugs in drug list does not exit");
+		}
 
-			if(drugKeyDataBuffer.length === 0){
-				throw new Error("One of the drugs in drug list does not exit");
-			}
-			drugObject = JSON.parse(drugKeyDataBuffer.toString());
-			drugObject.owner = buyerCRN;
-			drugObject.shipment = shipmentKey;
-			console.log("Updating drug  :: " + JSON.stringify(drugObject));
+		drugObject = JSON.parse(drugKeyDataBuffer.toString());
+		drugObject.owner = buyerCRN;
+		drugObject.shipment = shipmentKey;
 
-			drugKeyDataBuffer = Buffer.from(JSON.stringify(drugObject));
-			ctx.stub.putState(drugKey, drugKeyDataBuffer);
-			console.log("Updated drug  :: " + shipment.assets[index]);
+		drugKeyDataBuffer = Buffer.from(JSON.stringify(drugObject));
+		ctx.stub.putState(drugKey, drugKeyDataBuffer);
 	}
 
   return shipment;
@@ -305,22 +271,22 @@ async updateShipment(ctx, buyerCRN, drugName, transporterCRN){
 }
 
 /**
- * Create a new user account on the network
+ * PURCHASE OF DRUG BY CONSUMER DIRECTLY
  * @param ctx - The transaction context object
  * @param drugName - Name of the drug
  * @param serialNo - Serial no of the drug
  * @param retailerCRN - Company Registration Number of the retailer buying the drug.
  * @param aadhar - Aadhar Number of the buyer of the drug
- * @returns - Shipment Object
+ * @returns - DRUG Object
  */
 
 async retailDrug(ctx, drugName, serialNo, retailerCRN, customerAadhar){
 
-	let allowedIdentities = ["manufacturer.pharma-network.com", "distributor.pharma-network.com", "retailer.pharma-network.com", "transporter.pharma-network.com"];
-// let allowedIdentities = ["retailer.pharma-network.com"];
-   this.isInitiatorAllowed(ctx, allowedIdentities);
-	 const drugKeyName = drugName + "" + serialNo;
-	 const drugKey = ctx.stub.createCompositeKey('org.drug-counterfiet.pharma-network.drugs', [drugKeyName]);
+	const allowedIdentities = ["manufacturer.pharma-network.com", "distributor.pharma-network.com", "retailer.pharma-network.com", "transporter.pharma-network.com"];
+// const allowedIdentities = ["retailer.pharma-network.com"];
+  this.isInitiatorAllowed(ctx, allowedIdentities);
+  const drugKeyName = drugName + "" + serialNo;
+  const drugKey = ctx.stub.createCompositeKey('org.drug-counterfiet.pharma-network.drugs', [drugKeyName]);
 
   let drugKeyDataBuffer = await ctx.stub
   .getState(drugKey)
@@ -367,6 +333,37 @@ async viewDrugCurrentState(ctx, drugName, serialNo){
   }
 
   return JSON.parse(drugKeyDataBuffer.toString());
+}
+
+/**
+ * View the history of the drug on the Network.
+ * @param ctx - The transaction context object
+ * @param drugName - Name of the drug
+ * @param serialNo - Serial no of the drug
+ * @returns - History
+ */
+
+async viewHistory(ctx, drugName, serialNo){
+
+	const drugKeyName = drugName + "" + serialNo;
+	const drugKey = ctx.stub.createCompositeKey('org.drug-counterfiet.pharma-network.drugs', [drugKeyName]);
+
+	let iterator = await ctx.stub.getHistoryForKey(drugKey).catch(err => console.log(err));;
+    let result = [];
+    let res = await iterator.next();
+    while (!res.done) {
+      if (res.value) {
+        console.info(`Found state update with value: ${res.value.value.toString('utf8')}`);
+        const obj = JSON.parse(res.value.value.toString('utf8'));
+        result.push(obj);
+      }
+      res = await iterator.next();
+    }
+    await iterator.close();
+    return result;
+
+
+  // return JSON.parse(drugKeyDataBuffer.toString());
 }
 
 /**
