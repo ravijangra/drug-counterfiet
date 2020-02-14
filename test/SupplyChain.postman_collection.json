@@ -1,0 +1,366 @@
+{
+	"info": {
+		"_postman_id": "75d31fc9-4e2b-4edd-9290-7a2417273291",
+		"name": "Supply Chain",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "createPO - PartA",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "sellerCRN",
+							"value": "MAN001",
+							"type": "text"
+						},
+						{
+							"key": "buyerCRN",
+							"value": "DIST001",
+							"type": "text"
+						},
+						{
+							"key": "drugName",
+							"value": "Paracetamol",
+							"type": "text"
+						},
+						{
+							"key": "quantity",
+							"value": "3",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3002/createPO",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"createPO"
+					]
+				},
+				"description": "Purchase Order raised by ‘VG Pharma’ to purchase 3 strips of paracetamol from ‘Sun Pharma’"
+			},
+			"response": []
+		},
+		{
+			"name": "createShipment - PartA",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "transporterCRN",
+							"value": "TRA001",
+							"type": "text"
+						},
+						{
+							"key": "buyerCRN",
+							"value": "DIST001",
+							"type": "text"
+						},
+						{
+							"key": "drugName",
+							"value": "Paracetamol",
+							"type": "text"
+						},
+						{
+							"key": "listOfAssets",
+							"value": "Paracetamol001,Paracetamol002,Paracetamol003",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/createShipment",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"createShipment"
+					]
+				},
+				"description": "Shipment created by ‘Sun Pharma’ in response to the raised purchase order. ‘FedEx’ acts as the transporter."
+			},
+			"response": []
+		},
+		{
+			"name": "updateShipment - PartA",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "transporterCRN",
+							"value": "TRA001",
+							"type": "text"
+						},
+						{
+							"key": "buyerCRN",
+							"value": "DIST001",
+							"type": "text"
+						},
+						{
+							"key": "drugName",
+							"value": "Paracetamol",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3001/updateShipment",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"updateShipment"
+					]
+				},
+				"description": "‘Blue Dart’ delivers the shipment to ‘upgrad’"
+			},
+			"response": []
+		},
+		{
+			"name": "createPO - PartB",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "sellerCRN",
+							"value": "DIST001",
+							"type": "text"
+						},
+						{
+							"key": "buyerCRN",
+							"value": "RET002",
+							"type": "text"
+						},
+						{
+							"key": "drugName",
+							"value": "Paracetamol",
+							"type": "text"
+						},
+						{
+							"key": "quantity",
+							"value": "2",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3003/createPO",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3003",
+					"path": [
+						"createPO"
+					]
+				},
+				"description": "Purchase Order raised by ‘upgrad’ to purchase 2 strips of paracetamol from ‘VG Pharma’."
+			},
+			"response": []
+		},
+		{
+			"name": "createShipment - PartB",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "transporterCRN",
+							"value": "TRA002",
+							"type": "text"
+						},
+						{
+							"key": "buyerCRN",
+							"value": "RET002",
+							"type": "text"
+						},
+						{
+							"key": "drugName",
+							"value": "Paracetamol",
+							"type": "text"
+						},
+						{
+							"key": "listOfAssets",
+							"value": "Paracetamol001,Paracetamol002",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3002/createShipment",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"createShipment"
+					]
+				},
+				"description": "Shipment created by ‘VG Pharma’ in response to the raised purchase order. ‘Blue Dart’ acts as the transporter."
+			},
+			"response": []
+		},
+		{
+			"name": "updateShipment - PartB",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "transporterCRN",
+							"value": "TRA002",
+							"type": "text"
+						},
+						{
+							"key": "buyerCRN",
+							"value": "RET002",
+							"type": "text"
+						},
+						{
+							"key": "drugName",
+							"value": "Paracetamol",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3001/updateShipment",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"updateShipment"
+					]
+				},
+				"description": "‘Blue Dart’ delivers the shipment to ‘upgrad’"
+			},
+			"response": []
+		},
+		{
+			"name": "retailDrug - PartC",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "retailerCRN",
+							"value": "RET002",
+							"description": "upgrad's CRN",
+							"type": "text"
+						},
+						{
+							"key": "drugName",
+							"value": "Paracetamol",
+							"type": "text"
+						},
+						{
+							"key": "customerAadhar",
+							"value": "AkashAadhar01",
+							"description": "Akash's Aadhar Number",
+							"type": "text"
+						},
+						{
+							"key": "serialNo",
+							"value": "001",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3003/retailDrug",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3003",
+					"path": [
+						"retailDrug"
+					]
+				},
+				"description": "A customer named ‘Akash’ buys 1 paracetamol strip from the retailer ‘upgrad’"
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
